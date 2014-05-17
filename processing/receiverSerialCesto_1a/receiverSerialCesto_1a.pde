@@ -13,7 +13,7 @@
  
  Librería OSC: http://www.sojamo.de/libraries/oscP5/
  Librería Arduino: ya viene con la versión de Processing 2.0.3 
-                   (https://processing.org/download/?processing)                  
+ (https://processing.org/download/?processing)                  
  */
 
 
@@ -36,7 +36,7 @@ String serial;
 Serial port;
 
 //Variables para mensajes OSC
-int ARRAY_SIZE=6;
+int ARRAY_SIZE=1;
 boolean[] flags=new boolean[ARRAY_SIZE];
 MessageOSC[] m= new MessageOSC[ARRAY_SIZE];
 
@@ -52,11 +52,6 @@ float incrementVal=0.5;
  Declaro variables de color, de diametro y posiciones en la ventana para que coincida con el 
  png de fondo. */
 
-color on= color(255);
-color off= color(180);
-int offsetX=68;
-int cDiameter=85;
-int cDiameter2=25;
 int[] yPos= {
   147, 128, 116, 116, 128, 147
 };
@@ -88,9 +83,8 @@ int elapsedTime=15000;
 
 void setup() {
   size(700, 212);
-  background=loadImage("assets/background.png");
   println(Serial.list());
-  port=new Serial(this, Serial.list()[4], 115200 );
+  port=new Serial(this, Serial.list()[11], 115200 );
   port.clear();
   serial=port.readStringUntil(end);
   serial=null;
@@ -111,7 +105,7 @@ void setup() {
   }
 
   // Creo un archivo .txt con hora y fecha en que se ejecutó la aplicación
-  output=createWriter("data/databafici_"+d+"-"+mes+"/"+d+"_"+mes+"_"+h+"-"+min+"-"+s+".txt");
+  output=createWriter("data/cestoSensado"+d+"-"+mes+"/"+d+"_"+mes+"_"+h+"-"+min+"-"+s+".txt");
 
   //Inicio el cronómetro
   start=millis();
@@ -127,10 +121,6 @@ void setup() {
 void draw() {
   background(100, 80, 200);
   frame.setLocation(5, 10);
-  image(background, 0, 0);
-  ellipseMode(CENTER);
-  smooth();
-  noStroke();
 
   //Mientras lleguen datos desde puerto Serie los ordeno para poder leerlos correctamente
   while (port.available ()>0) {
@@ -140,29 +130,10 @@ void draw() {
   // Si el puerto Serie no es nulo parseo los bytes que llegan.
   if (serial != null) {
     String[]arduino=split(serial, ',');
+    println(arduino[0]);
 
-    //Con el for recorro todos los valores de los sensores para saber cuál esta siendo pulsado o no
-    for (int i=0;i<flags.length;i++) {
-      if (arduino[i].equals("1")) {
-        flags[i]=true;
-        fill(on);
-      }
-      else {
-        flags[i]=false;
-        fill(off);
-      }
-      pushMatrix();
-      translate(offsetX, 0);
-      ellipse(xPos[i], yPos[i], cDiameter, cDiameter );
-      fill(0);
-      ellipse(xPos[i], yPos[i], cDiameter2, cDiameter2 );
-      popMatrix();
-    }
+    m[0].sendOSC(arduino[0]);
 
-    // Le paso booleanos de cada sensor al objeto sendOSC para que envíe en tiempo real a node.js
-    for (int i=0;i<m.length;i++) {
-      m[i].sendOSC(flags[i]);
-    }
 
     //Si el conómetro llega al tiempo establecido guarda los datos de los sensores y se reinicia.
     if (millis()-start >= elapsedTime) {
