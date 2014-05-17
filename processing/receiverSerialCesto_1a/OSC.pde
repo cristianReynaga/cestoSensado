@@ -24,14 +24,14 @@ class MessageOSC {
 
   //La función sendOSC recibe un booleano según el estado del sensor.
 
-  void sendOSC(boolean cbFlag) {
+  void sendOSC(int val) {
     int trueVal=1;
     int falseVal=0;
-    bFlag=cbFlag;
+    //bFlag=cbFlag;
 
 
     //Declaro los tags de los mensajes OSC
-    String sensorValue= "/sensor_";
+    String sensorValue= "/cesto";
     String bSensor="/bSensor_";
 
     String[] bMessage= new String [2];

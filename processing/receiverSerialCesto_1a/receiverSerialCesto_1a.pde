@@ -132,7 +132,11 @@ void draw() {
     String[]arduino=split(serial, ',');
     println(arduino[0]);
 
-    m[0].sendOSC(arduino[0]);
+    OscMessage myMessage = new OscMessage("/cesto");
+    myMessage.add(arduino[0]);
+      oscP5.send(myMessage, myRemoteLocation); 
+
+    //  m[0].sendOSC(arduino[0]);
 
 
     //Si el conómetro llega al tiempo establecido guarda los datos de los sensores y se reinicia.
