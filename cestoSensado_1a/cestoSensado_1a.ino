@@ -1,6 +1,10 @@
-// ---------------------------------------------------------------------------
-// Example NewPing library sketch that does a ping about 20 times per second.
-// ---------------------------------------------------------------------------
+/*
+
+Sensado de cesto usando sensor ultrasonido SRF05
+16/05/2014
+#BAHackaton
+
+*/
 
 #include <NewPing.h>
 
