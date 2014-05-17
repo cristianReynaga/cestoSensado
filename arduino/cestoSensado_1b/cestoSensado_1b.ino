@@ -1,7 +1,7 @@
 /*
 
  Sensado de cesto usando sensor ultrasonido SRF05
- 16/05/2014
+ 17/05/2014
  #BAHackaton
  
  */
@@ -25,40 +25,16 @@ void setup() {
 }
 
 void loop() {
- 
+
   delay(50);                      // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
   unsigned int uS = sonar.ping(); // Send ping, get ping time in microseconds (uS).
- // Serial.print("Ping: ");
+  // Serial.print("Ping: ");
   Serial.print(uS / US_ROUNDTRIP_CM);
+  Serial.print(",");
   Serial.println();
 
+  delay(50);
 }
 
-/*
-
- //serial
- 
- for (int i=0; i<ARRAY_SIZE; i++) {
- led[i].on(ledPin[i], 0, sensorPin[i]);
- value[i]=digitalRead(sensorPin[i]);
- 
- 
- }
- 
- Serial.print(value[0], DEC);
- Serial.print(",");
- Serial.print(value[1], DEC);
- Serial.print(",");
- Serial.print(value[2], DEC);
- Serial.print(",");
- Serial.print(value[3], DEC);
- Serial.print(",");
- Serial.print(value[4], DEC);
- Serial.print(",");
- Serial.print(value[5], DEC);
- Serial.print(",");
- Serial.println();
- delay(50);
- */
 
 
