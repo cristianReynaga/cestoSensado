@@ -1,7 +1,7 @@
 /* Con la clase MeesageOSC recibo los valores desde Arduino y los envío utilizando el protocolo 
  OSC a node.js. 
  */
-
+/*
 class MessageOSC {
 
   int index;
@@ -78,4 +78,4 @@ class MessageOSC {
     }
   }
 }
-
+*/

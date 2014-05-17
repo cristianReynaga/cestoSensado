@@ -38,7 +38,7 @@ Serial port;
 //Variables para mensajes OSC
 int ARRAY_SIZE=1;
 boolean[] flags=new boolean[ARRAY_SIZE];
-MessageOSC[] m= new MessageOSC[ARRAY_SIZE];
+//MessageOSC[] m= new MessageOSC[ARRAY_SIZE];
 
 /* Variables para mapeo de datos que se envían por OSC y el valor de incremento
  Con estos valores ajusto el rango de los datos y la "velocidad" en que se llega del 
@@ -89,20 +89,7 @@ void setup() {
   serial=port.readStringUntil(end);
   serial=null;
 
-  //Inicializo el array del estado de sensores
-  for (int i=0; i<flags.length;i++) {
-    flags[i]=false;
-  }
 
-
-  /* Creo en un for todas las instancias de la clase realizada ad hoc que envía 
-   los mensajes OSC a node.js   
-   Sintaxis:
-   MessageOSC(int index, int minVal, int maxVal, int increment); */
-
-  for (int i=0;i<m.length;i++) {
-    m[i]= new MessageOSC(i, minCounter, maxCounter, incrementVal);
-  }
 
   // Creo un archivo .txt con hora y fecha en que se ejecutó la aplicación
   output=createWriter("data/cestoSensado"+d+"-"+mes+"/"+d+"_"+mes+"_"+h+"-"+min+"-"+s+".txt");
@@ -130,14 +117,11 @@ void draw() {
   // Si el puerto Serie no es nulo parseo los bytes que llegan.
   if (serial != null) {
     String[]arduino=split(serial, ',');
-    println(arduino[0]);
+  //  println(arduino[0]);
 
     OscMessage myMessage = new OscMessage("/cesto");
     myMessage.add(arduino[0]);
-      oscP5.send(myMessage, myRemoteLocation); 
-
-    //  m[0].sendOSC(arduino[0]);
-
+    oscP5.send(myMessage, myRemoteLocation);
 
     //Si el conómetro llega al tiempo establecido guarda los datos de los sensores y se reinicia.
     if (millis()-start >= elapsedTime) {
@@ -146,6 +130,7 @@ void draw() {
     }
   }
 
+
   /* Para cerrar la sesión apreto la tecla 'e' y de este modo guardo los datos restantes que pudieron
    no haberse guardado con el cronómetro. */
   if (key=='e') {
@@ -153,5 +138,15 @@ void draw() {
     output.close(); 
     exit();
   }
+}
+
+
+
+void mousePressed() {
+  /* in the following different ways of creating osc messages are shown by example */
+  OscMessage myMessage = new OscMessage("/test"); 
+  myMessage.add(123); /* add an int to the osc message */
+  /* send the message */
+  oscP5.send(myMessage, myRemoteLocation); 
 }
 
